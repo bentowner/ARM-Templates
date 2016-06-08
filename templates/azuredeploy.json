@@ -4,7 +4,7 @@
   "parameters": {
   },
   "variables": {
-    "storageAccountName": "McKessonTest",
+    "storageAccountName": "mckessontest",
     "location": "[resourceGroup().location]",
     "addressPrefix": "10.0.0.0/16",
     "subnet1Name": "DMZ-Subnet",
