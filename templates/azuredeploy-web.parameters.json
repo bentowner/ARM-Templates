@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+    "parameters": {
+        "numOfInstances": {
+        "value": 2
+        },
+        "storageAccountName": {
+        "value": "vicplinkeddemostorcyr"
+        },
+        "virtualNetworkName": {
+        "value": "McKessonVNET"
+        },
+        "subnetName": {
+        "value": "APP-Subnet"
+        },
+        "vmName": {
+        "value": "websvr"
+        },
+        "vmSize": {
+        "value": "Standard_A1"
+        },
+        "imageSKU": {
+        "value": "2012-R2-Datacenter"
+        },
+        "adminUsername": {
+        "value": "azureadmin"
+        },
+        "adminPassword": {
+        "value": "ChangeMe1237283649**7"
+        }
+    }
+}
