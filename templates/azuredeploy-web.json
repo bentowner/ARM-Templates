@@ -37,15 +37,35 @@
         "description": "Size of the VM"
       }
     },
-    "imageSKU": {
+    "imagePublisher": {
       "type": "string",
-      "defaultValue": "2012-R2-Datacenter",
+      "defaultValue": "openlogic",
+      "metadata": {
+        "description": "openlogic is the CentOS Distributor in Azure Market Place"
+      }
+    },
+    "imageOffer": {
+      "type": "string",
+      "defaultValue": "CentOS",
+      "metadata": {
+        "description": "New CentOS Image Offer"
+      }
+    },
+    "imageSku": {
+      "type": "string",
+      "defaultValue": "7.2",
       "allowedValues": [
-        "2008-R2-SP1",
-        "2012-Datacenter",
-        "2012-R2-Datacenter"
+        "6.5",
+        "6.6",
+        "7.1",
+        "7.2"
       ],
       "metadata": {
+        "description": "The CentOS version for the VM. This will pick a fully patched image of this given CentOS version."
+      }
+    },
+
+    "metadata": {
         "description": "Image SKU"
       }
     },
@@ -125,41 +145,33 @@
         "properties": {}
 	  },
     {
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(parameters('vmName'), copyIndex())]",
+      "name": "[variables('vmName')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]",
-        "[concat('Microsoft.Compute/availabilitySets/', variables('asName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
       ],
-      "copy" : {
-        "name" : "vmCopy",
-        "count" : "[parameters('numOfInstances')]"
-      },
       "properties": {
-        "availabilitySet": {
-          "id" : "[concat(resourceId('Microsoft.Compute/availabilitySets', variables('asName')))]"
-        },
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computerName": "[concat(parameters('vmName'),copyIndex())]",
+          "computerName": "[variables('vmName')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('imageSKU')]",
+            "publisher": "[parameters('imagePublisher')]",
+            "offer": "[parameters('imageOffer')]",
+            "sku": "[parameters('imageSku')]",
             "version": "latest"
           },
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/',concat('osdisk',copyIndex(),'.vhd'))]"
+              "uri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -168,7 +180,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[concat(resourceId('Microsoft.Network/networkInterfaces', variables('nicName')), copyIndex())]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
             }
           ]
         }

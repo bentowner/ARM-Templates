@@ -9,7 +9,7 @@
         "value": "mckessontest"
         },
         "virtualNetworkName": {
-        "value": "McKessonVNET"
+        "value": "EPSPE_VNET"
         },
         "subnetName": {
         "value": "APP-Subnet"
@@ -28,6 +28,18 @@
         },
         "adminPassword": {
         "value": "ChangeMe1237283649**7"
+        },
+        "imagePublisher": {
+          "value": "openlogic"
+        },
+        "imageOffer": {
+          "value": "CentOS"
+        },
+        "imageSku": {
+          "value": "7.1"
+        },
+        "vmSize": {
+          "value": "Standard_A1"
         }
     }
 }

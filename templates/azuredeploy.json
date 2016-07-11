@@ -14,12 +14,12 @@
     "subnet2Prefix": "10.0.1.0/24",
 	  "subnet3Prefix": "10.0.2.0/24",
     "storageAccountType": "Standard_LRS",
-    "virtualNetworkName": "McKessonVNET",
+    "virtualNetworkName": "EPSPE_VNET",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet2Name'))]",
     "apiVersion": "2015-06-15",
-    "sharedBaseUrl" : "https://raw.githubusercontent.com/NimboCloud/ARM-Templates/master/templates/",
+    "sharedBaseUrl" : "https://raw.githubusercontent.com/bentowner/ARM-Templates/master/templates/",
     "secondTemplate" : {
       "templateUrl" : "[concat(variables('sharedBaseUrl'),'azuredeploy-web.json')]",
       "paramUrl" : "[concat(variables('sharedBaseUrl'),'azuredeploy-web.parameters.json')]"
@@ -75,7 +75,7 @@
           }
         ]
       }
-    },
+    }
     {
       "apiVersion": "2015-01-01",
       "name": "APPserversLinked",
@@ -92,45 +92,6 @@
         },
         "parametersLink": {
           "uri": "[variables('secondTemplate').paramUrl]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-01-01",
-      "name": "DBserversLinked",
-      "type": "Microsoft.Resources/deployments",
-      "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('thirdTemplate').templateUrl]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parametersLink": {
-          "uri": "[variables('thirdTemplate').paramUrl]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-	{
-      "apiVersion": "2015-01-01",
-      "name": "NSGLinked",
-      "type": "Microsoft.Resources/deployments",
-      "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('fourthTemplate').templateUrl]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parametersLink": {
-          "uri": "[variables('fourthTemplate').paramUrl]",
           "contentVersion": "1.0.0.0"
         }
       }
